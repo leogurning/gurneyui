@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{ title }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div class="clearfix">
+        <form [formGroup]="inputForm" (ngSubmit)="updateUsercontactno(inputForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+            <div style="text-align:right">
+                <sup>*</sup> required
+            </div>
+            <div [ngClass]="{'has-error': inputForm.get('contactnotype').invalid && inputForm.get('contactnotype').dirty}">
+                <label for="contactnotype">Type<sup>*</sup> :</label>
+                <div class="gform">
+                  <select #inputcountryRef [appDisableControl]="this.loading == true" [formControl]="contactnotype">
+                      <option *ngFor="let t of ctype" [ngValue]="t.config_code">{{t.config_name}}</option>
+                  </select>
+                  <div class="text-danger input-warning" *ngIf="inputForm.get('contactnotype').dirty && inputForm.get('contactnotype').invalid">
+                      <span>Please input the correct type</span>
+                  </div>
+                </div>
+            </div>
+  
+            <div [ngClass]="{'has-error': inputForm.get('contactnovalue').invalid && inputForm.get('contactnovalue').dirty}">
+                <label for="contactnovalue">Contact Number<sup>*</sup> :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="contactnovalue" [formControl]="contactnovalue" placeholder="Contact Number">
+                    <div class="text-danger input-warning" *ngIf="inputForm.get('contactnovalue').dirty && inputForm.get('contactnovalue').invalid">
+                        <span>Please input the correct contact number</span>
+                    </div>
+                </div>
+            </div>
+            <div [ngClass]="{'has-error': inputForm.get('status').invalid && inputForm.get('status').dirty}">
+              <label for="status">Status<sup>*</sup> : </label>
+              <div class="gform">
+                <select [appDisableControl]="this.loading == true" [formControl]="status">
+                    <option *ngFor="let s of sts" [ngValue]="s.config_code">{{s.config_name}}</option>
+                </select>
+                <div class="text-danger input-warning" *ngIf="inputForm.get('status').dirty && inputForm.get('status').invalid">
+                    <span>Please input status</span>
+                </div>
+              </div>
+            </div>
+            <div>
+                <button type="submit" [disabled]="inputForm.invalid || this.loading == true" class="btn btn-primary">Save</button>
+                <button type="reset" [disabled]="this.loading == true" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+            </div>
+  
+        </form>                
+      </div>
+  </div>

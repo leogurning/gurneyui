@@ -1,0 +1,35 @@
+<!-- Fixed navbar -->
+<div id="wrap" *ngIf="!this.qhashid || this.qhashid === ''">
+      <header>   
+          <div class="inner relative">
+              <a *ngIf="!authService.isLoggedIn()" class="logo" href="#"><img src="assets/images/KXLOGO6.png" alt="kaxet"></a>
+              <a *ngIf="authService.isLoggedIn()" class="logo" routerLink="dashboard" routerLinkActive="active"><img src="assets/images/KXLOGO6.png" alt="kaxet"></a>
+              <!-- <span class="logo">GURNEY</span> -->
+              <a id="menu-toggle" class="button primary" href="#"><i class="fa fa-bars fa-2x"></i></a>
+              <nav id="navigation">
+                  <ul id="main-menu" onclick="toggleMenu()">
+                    <li *ngIf="authService.isLoggedIn()">
+                        <a style="cursor:pointer;float:center;color:#f2f4df" routerLink="dashboard" routerLinkActive="active"><i class="fa fa-home fa-lg"></i></a>
+                    </li>
+                    <li class="parent" *ngIf="authService.isLoggedIn() && authService.currentUser.usertype == 'USRADT'">
+                        <a routerLink="clientmgt" routerLinkActive="active">Client Management</a>
+                            <ul class="sub-menu">
+                                <li><a routerLink="clientmgt/clients" routerLinkActive="active">Clients</a></li>
+                                <li><a routerLink="clientmgt/pendingusercli" routerLinkActive="active">Pending User</a></li>
+                            </ul>
+                    </li>                    
+                    <li class="current-menu-item" *ngIf="!authService.isLoggedIn() && this.qhashid === ''"><a routerLink="login" routerLinkActive="active"><i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i>  Login / Register</a></li>
+                    <li class="parent" *ngIf="authService.isLoggedIn()">
+                        <a routerLink="user" routerLinkActive="active">Hi, {{ authService.currentUser.firstname }}  <i class="fa fa-user"></i></a>
+                            <ul class="sub-menu">
+                                <li><a routerLink="user" routerLinkActive="active">My Profile</a></li>
+                                <li><a routerLink="user/password" routerLinkActive="active">Change Password</a></li>
+                                <li><a routerLink="logout" routerLinkActive="active">Logout</a></li>
+                            </ul>
+                    </li>
+                  </ul>
+              </nav>
+              <div class="clear"></div>
+          </div>
+      </header>	
+  </div> 

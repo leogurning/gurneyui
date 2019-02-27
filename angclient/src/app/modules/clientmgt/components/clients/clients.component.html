@@ -1,0 +1,95 @@
+<div class="container" >
+  <div class="pagecontainer">
+      <div class="page-header">
+          <h3>Clients</h3>
+      </div>
+
+      <form [formGroup]="searchForm" (ngSubmit)="getReport(searchForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+          <div *ngIf="this.loading == true" class="lds-dual-ring"></div>
+          <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '10px' }"></ngx-loading> -->
+
+          <div class="row">
+              <div class="col-md-5">
+                  <label for="searchinput">Search :</label>
+                  <div class="gform">
+                      <input type="text" [appDisableControl]="this.loading == true" id="searchinput" [formControl]="searchinput" placeholder="Search">
+                  </div>
+              </div>
+    
+              <div class="col-md-3">
+                  <label for="status">Status : </label>
+                  <div class="gform">
+                    <select [appDisableControl]="this.loading == true" [formControl]="status">
+                        <option ng-selected="true" value="">Select status</option>
+                        <option *ngFor="let s of sts" [ngValue]="s.config_code">{{s.config_name}}</option>
+                    </select>
+                  </div>
+              </div>
+              <div class="col-md-4">
+                <div>
+                  <label for="result"> &nbsp;</label>
+                </div>
+                <div class="pull-right"> 
+                    <button type="submit" class="btn btn-primary" [disabled]="this.loading == true || searchForm.invalid"><i class="fa fa-search"></i></button>
+                    <button type="button" [disabled]="this.loading == true" class="btn btn-primary" (click)="goToAdd()"><i class="fa fa-plus"></i></button>
+                </div>
+              </div>
+          </div>
+
+      </form>
+
+      <div *ngIf="!clients || totalrows <= 0">
+        <h5>No Client found</h5>   
+      </div>
+
+      <div *ngIf="clients && totalrows > 0">
+        <label for="result"> Result: {{ totalrows }} Clients</label>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" width="3%">#</th>
+                        <th scope="col" width="37%"><a (click)="sortClients('client_name')">Name</a></th>
+                        <th scope="col" width="30%">Area</th>
+                        <th scope="col" width="6%"><a (click)="sortClients('status')">Status</a></th>
+                        <th scope="col" class="text-action">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let cli of clients; let cliIndex = index'>
+                        <td scope="row" data-label="No">{{ ((qpage - 1) * 10) + (cliIndex + 1) }}</td>
+                        <td data-label="Name">{{ cli.client_name }}</td>
+                        <td data-label="Area">{{ cli.district_name + ' / '+ cli.city_name + ' / '+ cli.province_name }}</td>
+                        <td data-label="Status">{{ cli.status}}</td>
+                        <td data-label="Action" class="text-action">
+                            <button type="button" class="btn btn-info btn-sm" style="margin-right:5px" aria-label="Edit" (click)="goToedit(cli.client_id)" data-toggle="tooltip" data-placement="top" title="Change Client Data">
+                                <span><i class="fa fa-edit"></i></span>
+                            </button>
+                            <button type="button" class="btn btn-info btn-sm" aria-label="Delete" (click)="confirmDel(cli.client_id, cli.client_name)" data-toggle="tooltip" data-placement="top" title="Delete Client Data">
+                                <span><i class="fa fa-trash-o"></i> </span>
+                            </button>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="clients && totalrows > 10">
+            
+              <ul class="pagination">
+                  <li class="page-item" [ngClass]="{'disabled': qpage == 1 }">
+                      <a class="page-link" (click) = "prevPage()">&laquo;</a>
+                    </li>
+                  <li class="page-item" *ngFor="let item of createPager(pgCounter); let idx = index" [ngClass]="{'active': qpage == idx + 1 }">
+                      <a  class="page-link" (click) = "setPage(idx + 1)">{{ idx + 1 }}</a>
+                  </li>
+                  <li class="page-item" [ngClass]="{'disabled': qpage == totalpage}">
+                      <a class="page-link" (click) = "nextPage()">&raquo;</a>
+                    </li>
+              </ul>
+          
+        </div>
+
+      </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="pagecontainer">
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="card mb3">
+            <h3 class="card-header" style="background-color:#09273a;color:#fffefe">Email verification completed</h3>
+            <div class="card-body">
+              <h5 class="card-title">Hi {{ firstname }}</h5>
+              <p class="card-text">You have successfully completed your email verification. 
+                Below is your account details:</p>
+            </div>
+
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                  UserId: <h6><u>{{ username }}</u></h6>
+                  Name: <h6><u>{{ lastname }}, {{ firstname }}</u></h6>
+                  Email: <h6><u>{{ email }}</u></h6>
+              </li>
+              <!-- <li class="list-group-item">Name: Matteo, Leon</li>
+              <li class="list-group-item">Email: Leon@good.id</li> -->
+            </ul>
+            <div class="card-body">
+                <p class="card-text">Our administrator will activate your account within 1 x 24 hours</p>
+            </div>
+            <div class="card-footer text-muted">
+              Gurney team
+            </div>
+          </div>
+          
+    </div>
+  </div>

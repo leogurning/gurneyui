@@ -1,0 +1,132 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{ title }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="clearfix">
+        <form [formGroup]="inputForm" (ngSubmit)="updateClient(inputForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+            <div style="text-align:right">
+                <sup>*</sup> required
+            </div>
+
+            <div [ngClass]="{'has-error': inputForm.get('clientname').invalid && inputForm.get('clientname').dirty}">
+                <label for="clientname">Name<sup>*</sup> :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="clientname" [formControl]="clientname" placeholder="Name">
+                    <div class="text-danger input-warning" *ngIf="inputForm.get('clientname').dirty && inputForm.get('clientname').invalid">
+                        <span>Please input the correct name</span>
+                    </div>
+                </div>
+            </div>
+
+            <div [ngClass]="{'has-error': inputForm.get('clientemail').invalid && inputForm.get('clientemail').dirty}">
+                <label for="clientemail">Email <sup>*</sup> :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="clientemail" [formControl]="clientemail" placeholder="Email">
+                    <div class="text-danger input-warning" *ngIf="inputForm.get('clientemail').dirty && inputForm.get('clientemail').invalid">
+                        <span>Please input the correct email</span>
+                    </div>
+                </div>
+            </div>
+
+            <div [ngClass]="{'has-error': inputForm.get('contactnumber').invalid && inputForm.get('contactnumber').dirty}">
+                <label for="contactnumber">Contact Number<sup>*</sup> :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="contactnumber" [formControl]="contactnumber" placeholder="Contact Number">
+                    <div class="text-danger input-warning" *ngIf="inputForm.get('contactnumber').dirty && inputForm.get('contactnumber').invalid">
+                        <span>Please input the correct contact number</span>
+                    </div>
+                </div>
+            </div>
+
+            <div [ngClass]="{'has-error': inputForm.get('address1').invalid && inputForm.get('address1').dirty}">
+                <label for="address1">Address Line 1<sup>*</sup> :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="address1" [formControl]="address1" placeholder="Address 1">
+                    <div class="text-danger input-warning" *ngIf="inputForm.get('address1').dirty && inputForm.get('address1').invalid">
+                        <span>Please input the correct address line 1</span>
+                    </div>
+                </div>
+            </div>
+  
+            <div [ngClass]="{'has-error': inputForm.get('address2').invalid && inputForm.get('address2').dirty}">
+                <label for="address2">Address Line 2 :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="address2" [formControl]="address2" placeholder="Address 2">
+                    <div class="text-danger input-warning" *ngIf="inputForm.get('address2').dirty && inputForm.get('address2').invalid">
+                        <span>Please input the correct address line 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div [ngClass]="{'has-error': inputForm.get('countrycode').invalid && inputForm.get('countrycode').dirty}">
+                <label for="countrycode">Country<sup>*</sup> :</label>
+                <div class="gform">
+                  <select #inputcountryRef [appDisableControl]="this.loading == true" [formControl]="countrycode" (change)="countryChangeEvent()">
+                      <option *ngFor="let a of activecountries" [ngValue]="a.config_code">{{a.config_name}}</option>
+                  </select>
+                  <div class="text-danger input-warning" *ngIf="inputForm.get('countrycode').dirty && inputForm.get('countrycode').invalid">
+                      <span>Please input the correct country code</span>
+                  </div>
+                </div>
+            </div>
+  
+            <div [ngClass]="{'has-error': inputForm.get('provinceid').invalid && inputForm.get('provinceid').dirty}">
+                <label for="provinceid">Province<sup>*</sup> :</label>
+                <div class="gform">
+                  <select #inputprovinceRef [appDisableControl]="this.loading == true" [formControl]="provinceid" (change)="provinceChangeEvent()">
+                      <option *ngFor="let p of province" [ngValue]="p.province_id">{{p.province_name}}</option>
+                  </select>
+                  <div class="text-danger input-warning" *ngIf="inputForm.get('provinceid').dirty && inputForm.get('provinceid').invalid">
+                      <span>Please input province</span>
+                  </div>
+                </div>
+            </div>
+
+            <div [ngClass]="{'has-error': inputForm.get('cityid').invalid && inputForm.get('cityid').dirty}">
+                <label for="cityid">City<sup>*</sup> : </label>
+                <div class="gform">
+                  <select #inputcityRef [appDisableControl]="this.loading == true" [formControl]="cityid" (change)="cityChangeEvent()">
+                      <option *ngFor="let c of city" [ngValue]="c.city_id">{{c.city_name}}</option>
+                  </select>
+                  <div class="text-danger input-warning" *ngIf="inputForm.get('cityid').dirty && inputForm.get('cityid').invalid">
+                      <span>Please input city</span>
+                  </div>
+                </div>
+            </div>
+  
+            <div [ngClass]="{'has-error': inputForm.get('districtid').invalid && inputForm.get('districtid').dirty}">
+                <label for="districtid">District<sup>*</sup> : </label>
+                <div class="gform">
+                  <select [appDisableControl]="this.loading == true" [formControl]="districtid">
+                      <option *ngFor="let d of district" [ngValue]="d.district_id">{{d.district_name}}</option>
+                  </select>
+                  <div class="text-danger input-warning" *ngIf="inputForm.get('districtid').dirty && inputForm.get('districtid').invalid">
+                      <span>Please input district</span>
+                  </div>
+                </div>
+            </div>
+
+            <div [ngClass]="{'has-error': inputForm.get('status').invalid && inputForm.get('status').dirty}">
+                <label for="status">Status<sup>*</sup> : </label>
+                <div class="gform">
+                  <select [appDisableControl]="this.loading == true" [formControl]="status">
+                      <option *ngFor="let s of sts" [ngValue]="s.config_code">{{s.config_name}}</option>
+                  </select>
+                  <div class="text-danger input-warning" *ngIf="inputForm.get('status').dirty && inputForm.get('status').invalid">
+                      <span>Please input status</span>
+                  </div>
+                </div>
+            </div>
+            
+            <div>
+                <button type="submit" [disabled]="inputForm.invalid || this.loading == true" class="btn btn-primary">Save</button>
+                <button type="reset" [disabled]="this.loading == true" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+            </div>
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,177 @@
+<div class="container" >
+    <div class="pagecontainer">
+        <div class="page-header">
+            <h3>Profile</h3>
+        </div>
+        <div class="clearfix">
+
+          <form [formGroup]="profileForm" (ngSubmit)="updateUser(profileForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+              
+              <div *ngIf="this.loading == true" class="lds-dual-ring"></div>
+              <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '10px' }"></ngx-loading> -->
+              <div style="text-align:center">
+                  <img src="{{ this.displayImg }}" style="border-radius:50%" width="200" height="200">
+              </div>
+    
+              <div style="text-align:center; margin-top:5px">
+                  <span *ngIf="this.loading == false" class="btn btn-file">
+                      Change Photo <input [disabled]="this.loading == true" type="file" accept="image/*" (change)="fileChangeEvent($event)" name="profilephoto" id="profilephoto" aria-describedby="fileHelp">
+                  </span>
+                  <small id="fileHelp" class="form-text" style="color:red;"><sup>* <u>FILE SIZE (MAX {{ +this.maxfilesize /1000000 }} MB)</u></sup></small>
+              </div>
+
+              <label for="userid">User Id :</label>
+              <div>
+                  <div class="input-group-addon"><i class="glyphicon glyphicon glyphicon-user"></i></div>
+                  <div class="form-ele">{{ userObj.userid }}</div>
+              </div>
+              
+              <div>
+                <label for="firstname">First Name :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="firstname" [formControl]="firstname" placeholder="First Name">
+                </div>
+              </div>
+
+              <div>
+                  <label for="lastname">Last Name :</label>
+                  <div class="gform">
+                      <input type="text" [appDisableControl]="this.loading == true" id="lastname" [formControl]="lastname" placeholder="Last Name">
+                  </div>
+              </div>
+              
+              <div>
+                    <label for="role">Role / Job Title :</label>
+                    <div class="gform">
+                        <input type="text" [appDisableControl]="this.loading == true" id="role" [formControl]="role" placeholder="Role / Job title">
+                    </div>
+              </div>
+
+              <label for="email">Email :</label>
+              <div>
+                  <!-- <div class="input-group-addon">@</div> -->
+                  <div class="form-ele">{{ userObj.email }}</div>
+                  <div class="text-warning input-warning" *ngIf="authService.currentUser.ver_email == 'N'">
+                      <span>Email is not verified yet. Please verify by clicking <a style="cursor:pointer" (click)="verifyEmail(userObj.username, userObj.name, userObj.email)" data-toggle="tooltip" data-placement="top" title="Verify">HERE</a> !</span>
+                  </div>  
+              </div>                
+
+              <label for="lastlogin">Last Login :</label>
+              <div>
+                  <div class="input-group-addon"><i class="glyphicon glyphicon glyphicon-calendar"></i></div>
+                  <div class="form-ele">{{ userObj.lastlogin | date:'medium' }}</div>
+              </div>
+
+              <div>
+                  <button type="submit" [disabled]="profileForm.invalid || this.loading == true" class="btn btn-primary">Update</button>
+                  <button type="reset" [disabled]="this.loading == true" class="btn btn-secondary" (click)="onBack()">Cancel</button>
+              </div>
+
+          </form>                
+        </div>
+
+        <div *ngIf="!useraddress || totalrows <= 0">
+            <h5>No Address found</h5> 
+            <button type="button" [disabled]="this.loading == true" class="btn btn-primary" (click)="goToaddAddress()">Add +</button>
+        </div>
+
+        <div *ngIf="useraddress && totalrows > 0">
+                <h5>Address ({{ totalrows }}) </h5>
+                <div style="margin-bottom:5px">
+                  <button type="button" class="btn btn-primary" [disabled]="this.loading == true" (click)="goToaddAddress()">Add +</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" width="3%">#</th>
+                                <th scope="col" width="37%">Address</th>
+                                <th scope="col" width="30%">Area</th>
+<!--                                 <th scope="col" width="10%"><a (click)="sortAddress('district_name')">District</a></th>
+                                <th scope="col" width="10%"><a (click)="sortAddress('city_name')">City</a></th>
+                                <th scope="col" width="10%"><a (click)="sortAddress('province_name')">Province</a></th>
+ -->                            <th scope="col" width="6%"><a (click)="sortAddress('status')">Status</a></th>
+                                <th scope="col" class="text-action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor='let addr of useraddress; let adrIndex = index'>
+                                <td scope="row" data-label="No">{{ ((qpage - 1) * 10) + (adrIndex + 1) }}</td>
+                                <td data-label="Address">{{ addr.address_line_1 + ' ' + addr.address_line_2}}</td>
+                                <td data-label="Area">{{ addr.district_name + ' / '+ addr.city_name + ' / '+ addr.province_name }}</td>
+                                <td data-label="Status">{{ addr.status}}</td>
+                                <td data-label="Action" class="text-action">
+                                    <button type="button" class="btn btn-info btn-sm" style="margin-right:5px" aria-label="Edit" (click)="goToeditAddress(addr.address_id)" data-toggle="tooltip" data-placement="top" title="Change Address Data">
+                                        <span><i class="fa fa-edit"></i></span>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm" aria-label="Delete" (click)="confirmDel(addr.address_id, addr.district_name)" data-toggle="tooltip" data-placement="top" title="Delete Address Data">
+                                        <span><i class="fa fa-trash-o"></i> </span>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="useraddress && totalrows > 10">
+                      
+                        <ul class="pagination">
+                            <li class="page-item" [ngClass]="{'disabled': qpage == 1 }">
+                                <a class="page-link" (click) = "prevPage()">&laquo;</a>
+                              </li>
+                            <li class="page-item" *ngFor="let item of createPager(pgCounter); let idx = index" [ngClass]="{'active': qpage == idx + 1 }">
+                                <a  class="page-link" (click) = "setPage(idx + 1)">{{ idx + 1 }}</a>
+                            </li>
+                            <li class="page-item" [ngClass]="{'disabled': qpage == totalpage}">
+                                <a class="page-link" (click) = "nextPage()">&raquo;</a>
+                              </li>
+                        </ul>
+                    
+                </div>
+        </div>
+
+        <div *ngIf="!usercontactno || totalrows <= 0">
+            <h5>No Contact Number found</h5> 
+            <button type="button" [disabled]="this.loading == true" class="btn btn-primary" (click)="goToaddContactno()">Add +</button>
+        </div>
+
+        <div *ngIf="usercontactno && totalrows > 0">
+                <h5>Contact Number ({{ totalrowscn }}) </h5>
+                <div style="margin-bottom:5px">
+                  <button type="button" [disabled]="this.loading == true" class="btn btn-primary" (click)="goToaddContactno()">Add +</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table" style="width:60%">
+                        <thead>
+                            <tr>
+                                <th scope="col" width="3%">#</th>
+                                <th scope="col" width="15%">Type</th>
+                                <th scope="col" width="17%">Contact No</th>
+                                <th scope="col" width="6%">Status</th>
+                                <th scope="col" width="15%" class="text-action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor='let cn of usercontactno; let cnIndex = index'>
+                                <td scope="row" data-label="No">{{ cnIndex + 1 }}</td>
+                                <td data-label="Type">{{ cn.type }}</td>
+                                <td data-label="Contact No">{{ cn.contact_no_value }}</td>
+                                <td data-label="Status">{{ cn.status}}</td>
+                                <td data-label="Action" class="text-action">
+                                    <button type="button" class="btn btn-info btn-sm" style="margin-right:5px" aria-label="Edit" (click)="goToeditContactno(cn.contact_no_id)" data-toggle="tooltip" data-placement="top" title="Change Contact No">
+                                        <span><i class="fa fa-edit"></i></span>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm" aria-label="Delete" (click)="confirmDelContact(cn.contact_no_id, cn.type)" data-toggle="tooltip" data-placement="top" title="Delete Contact no">
+                                        <span><i class="fa fa-trash-o"></i> </span>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+        </div>
+
+    </div>
+  </div>

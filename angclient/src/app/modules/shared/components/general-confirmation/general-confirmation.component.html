@@ -1,0 +1,11 @@
+<div class="modal-header" style="text-align: center; background-color:#09273a;color:#fffefe">
+  <h4 class="col-12 modal-title text-center">{{ title }}
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true" style="color:#fffefe">&times;</span>
+    </button>
+  </h4>
+</div>
+<div class="modal-body text-center">
+    <p> {{ data.message }}</p>
+    <button type="button" class="btn btn-info" (click)="modalRef.hide()" >Close</button>
+</div>

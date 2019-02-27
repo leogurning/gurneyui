@@ -1,0 +1,24 @@
+{
+  "name": "gurneyui",
+  "version": "1.0.0",
+  "description": "gurney ui app with angular 5",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "*",
+    "morgan": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leogurning/gurneyui.git"
+  },
+  "author": "Leonard Gurning",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leogurning/gurneyui/issues"
+  },
+  "homepage": "https://github.com/leogurning/gurneyui#readme"
+}

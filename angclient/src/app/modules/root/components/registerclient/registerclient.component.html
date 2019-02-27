@@ -1,0 +1,94 @@
+<div class="container" >
+  <div class="pagecontainer">
+      <div class="page-header">
+          <h3>Register</h3>
+      </div>
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div class="clearfix">
+
+          <form [formGroup]="inputForm" (ngSubmit)="addUserclient(inputForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+            <div style="text-align:right">
+                <sup>*</sup> required
+            </div>
+            <div [ngClass]="{'has-error': inputForm.get('userid').invalid && inputForm.get('userid').dirty}">
+                <label for="userid">Username <sup>*</sup> :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="userid" [formControl]="userid" placeholder="Username">
+                    <div class="text-danger input-warning" *ngIf="inputForm.get('userid').dirty && inputForm.get('userid').invalid">
+                        <span>Please input the correct username</span>
+                    </div>
+                </div>
+            </div>
+
+            <div [ngClass]="{'has-error': inputForm.get('email').invalid && inputForm.get('email').dirty}">
+                <label for="email">Email <sup>*</sup> :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="email" [formControl]="email" placeholder="Email">
+                    <div class="text-danger input-warning" *ngIf="inputForm.get('email').dirty && inputForm.get('email').invalid">
+                        <span>Please input the correct email</span>
+                    </div>
+                </div>
+            </div>
+
+            <div formGroupName="passwordGroup" [ngClass]="{'has-error': inputForm.get('passwordGroup').errors }">
+                
+              <div [ngClass]="{'has-error': inputForm.get('passwordGroup.password').invalid && inputForm.get('passwordGroup.password').dirty}">
+                  <label for="password">Password <sup>*</sup> :</label>
+                  <div class="gform">
+                      <input type="password" [appDisableControl]="this.loading == true" id="password" [formControl]="password" placeholder="Password">
+                      <div class="text-danger input-warning"  *ngIf="inputForm.get('passwordGroup.password').dirty && inputForm.get('passwordGroup.password').errors">
+                          <span *ngIf="inputForm.get('passwordGroup.password').errors.required">
+                              Please enter password
+                          </span>
+                          <span *ngIf="inputForm.get('passwordGroup.password').errors.pattern">
+                              Password must be minimum 6 and maximum 20 characters AND contain at least one letter, number & special characters
+                          </span>
+                      </div>
+                  </div>
+                  
+              </div>
+              <div [ngClass]="{'has-error': inputForm.get('passwordGroup.retypepass').invalid && inputForm.get('passwordGroup.retypepass').dirty}">
+                  <label for="retypepass">Retype Password <sup>*</sup> :</label>
+                  <div class="gform">
+                      <input type="password" [appDisableControl]="this.loading == true" id="retypepass" [formControl]="retypepass" placeholder="Retype Password">
+                      <div class="text-danger input-warning" *ngIf="(inputForm.get('passwordGroup.retypepass').touched || inputForm.get('passwordGroup.retypepass').dirty) && (inputForm.get('passwordGroup.retypepass').errors || inputForm.get('passwordGroup').errors)">
+                          <span *ngIf="inputForm.get('passwordGroup.retypepass').errors?.required">
+                              Please confirm your password
+                          </span>
+                          <span *ngIf="inputForm.get('passwordGroup').errors?.mismatchedPassword">
+                              Password do not match
+                          </span>
+                      </div>
+                  </div>
+              </div>
+        
+            </div>
+
+            <div>
+                <label for="firstname">First name :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="firstname" [formControl]="firstname" placeholder="First name">
+                </div>
+            </div>
+            <div>
+                <label for="lastname">Last name :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="lastname" [formControl]="lastname" placeholder="Last name">
+                </div>
+            </div>
+
+            <div>
+                <label for="role">Role / Job Title :</label>
+                <div class="gform">
+                    <input type="text" [appDisableControl]="this.loading == true" id="role" [formControl]="role" placeholder="Role / Job Title">
+                </div>
+            </div>
+            <div>               
+                <button type="submit" [disabled]="inputForm.invalid || this.loading == true" class="btn btn-primary">Submit</button>
+                <button type="reset" [disabled]="this.loading == true" class="btn btn-secondary" style="margin-right:5px">Reset</button>
+                <button type="button" [disabled]="this.loading == true" (click)="onLogin()" class="btn btn-info">Back to Login</button>               
+            </div>
+          </form>
+      </div>
+  </div>
+</div>

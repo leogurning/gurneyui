@@ -1,0 +1,83 @@
+<div class="container" >
+  <div class="pagecontainer">
+      <div class="page-header">
+          <h3>Pending User Client</h3>
+      </div>
+
+      <form [formGroup]="searchForm" (ngSubmit)="getReport(searchForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+          <div *ngIf="this.loading == true" class="lds-dual-ring"></div>
+          <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '10px' }"></ngx-loading> -->
+          <div class="row">
+              <div class="col-md-5">
+                  <label for="searchinput">Search :</label>
+                  <div class="gform">
+                      <input type="text" [appDisableControl]="this.loading == true" id="searchinput" [formControl]="searchinput" placeholder="Search">
+                  </div>
+              </div>
+    
+              <div class="col-md-7">
+                <div>
+                  <label for="result"> &nbsp;</label>
+                </div>
+                <div class="pull-right"> 
+                    <button type="submit" class="btn btn-primary" [disabled]="this.loading == true || searchForm.invalid"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+          </div>
+      </form>
+
+      <div *ngIf="!users || totalrows <= 0">
+        <h5>No Pending Users found</h5>
+      </div>
+
+      <div *ngIf="users && totalrows > 0">
+        <label for="result"> Result: {{ totalrows }} Users</label>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" width="3%">#</th>
+                        <th scope="col" width="15%"><a (click)="sortUsers('user_id')">Username</a></th>
+                        <th scope="col" width="30%"><a (click)="sortUsers('first_name')">First Name</a></th>
+                        <th scope="col" width="30%"><a (click)="sortUsers('last_name')">Last Name</a></th>
+                        <th scope="col" class="text-action">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let cli of users; let cliIndex = index'>
+                        <td scope="row" data-label="No">{{ ((qpage - 1) * 10) + (cliIndex + 1) }}</td>
+                        <td data-label="Username">{{ cli.user_id }}</td>
+                        <td data-label="First Name">{{ cli.first_name }}</td>
+                        <td data-label="Last Name">{{ cli.last_name }}</td>
+                        <td data-label="Action" class="text-action">
+                            <button type="button" class="btn btn-info btn-sm" style="margin-right:5px" aria-label="Approve" (click)="goToedit(cli.user_id)" data-toggle="tooltip" data-placement="top" title="Approve User">
+                                <span><i class="fa fa-edit"></i></span>
+                            </button>
+                            <button type="button" class="btn btn-info btn-sm" aria-label="Delete" (click)="confirmReject(cli.user_id, cli.first_name)" data-toggle="tooltip" data-placement="top" title="Reject User">
+                                <span><i class="fa fa-trash-o"></i> </span>
+                            </button>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="users && totalrows > 10">
+            
+              <ul class="pagination">
+                  <li class="page-item" [ngClass]="{'disabled': qpage == 1 }">
+                      <a class="page-link" (click) = "prevPage()">&laquo;</a>
+                    </li>
+                  <li class="page-item" *ngFor="let item of createPager(pgCounter); let idx = index" [ngClass]="{'active': qpage == idx + 1 }">
+                      <a  class="page-link" (click) = "setPage(idx + 1)">{{ idx + 1 }}</a>
+                  </li>
+                  <li class="page-item" [ngClass]="{'disabled': qpage == totalpage}">
+                      <a class="page-link" (click) = "nextPage()">&raquo;</a>
+                    </li>
+              </ul>
+          
+        </div>
+
+      </div>
+  </div>
+</div>
